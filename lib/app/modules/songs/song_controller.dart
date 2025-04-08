@@ -8,15 +8,19 @@ class SongsController extends GetxController {
   final AudioPlayer player = AudioPlayer();
 
   var songs = <SongModel>[].obs;
+  var displayedSongs = <SongModel>[].obs;
   var isPlaying = false.obs;
   bool isListening = false;
   RxInt songIndex = 0.obs;
   var isExpanded = false.obs;
   var currentSongTitle = "".obs;
+  var shuffled = false.obs;
   RxInt currentPos = 0.obs;
   var vol = 0.0.obs;
   RxDouble progress = 0.0.obs;
   RxDouble progress1 = 0.0.obs;
+
+
 
   @override
   void onInit() {
@@ -80,6 +84,7 @@ class SongsController extends GetxController {
    // songs.assignAll(prioritizedSongs);
     //await loadPlaylist(prioritizedSongs);
     songs.assignAll(mp3Songs);await loadPlaylist(mp3Songs);
+    displayedSongs.value=songs.value;
   }
 
   Future<void> playSong(String uri, String title, int id) async {
@@ -87,11 +92,11 @@ class SongsController extends GetxController {
       if (player.playing && songIndex.value == id) {
         await player.pause();
       } else {
-        if (songIndex.value != id) {
+        if (songIndex.value != id || (songIndex.value==0&&id==0)) {
           songIndex.value = id;
           await player.seek(Duration.zero, index: id);
-
           if (!isListening) {
+
             player.currentIndexStream.listen((index) {
               if (index != null) {
                 songIndex.value = index;
@@ -151,21 +156,32 @@ class SongsController extends GetxController {
     }
   }
   void shuffle() async {
+
     try {
       await player.setShuffleModeEnabled(true);
       await player.shuffle();
 
+
       //;
       if (player.shuffleIndices != null) {
         final shuffledSongs = player.shuffleIndices!.map((index) => songs[index]).toList();
-        songs.value = shuffledSongs;
+        displayedSongs.value = player.shuffleModeEnabled
+            ? player.shuffleIndices!.map((i) => songs[i]).toList()
+            : songs;
       }
 
-      // If currently playing, update the song index
       if (player.playing) {
-        songIndex.value = player.currentIndex ?? 0;
-        currentSongTitle.value = songs[songIndex.value].title;
-        print("${songs[14].title }");
+        print("jud${songIndex.value} ${player.currentIndex}");
+        if (songIndex.value != player.currentIndex) {
+          print("judo${songIndex.value} ${player.currentIndex}");
+          songIndex.value = player.currentIndex ?? 0;
+          currentSongTitle.value = songs[songIndex.value].title;
+          await player.seek(Duration.zero, index: songIndex.value);
+          await player.play();
+          update();
+        } else {
+         // currentSongTitle.value = songs[songIndex.value].title;
+        }
       }
       update();
     } catch (e) {

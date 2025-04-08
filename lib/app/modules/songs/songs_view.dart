@@ -58,9 +58,9 @@ class _SongViewState extends State<SongView> {
       ),
       body: Obx(() {
           return ListView.builder(
-              itemCount: controller.songs.length,
+              itemCount: controller.displayedSongs.length,
               itemBuilder:(context, index){
-                final songs = controller.songs[index];
+                 final songs = controller.displayedSongs[index];
                 return ListTile(
                   leading:QueryArtworkWidget(
                       id: songs.id,
