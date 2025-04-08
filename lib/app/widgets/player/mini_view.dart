@@ -33,13 +33,14 @@ class MiniView extends StatelessWidget {
           alignment: Alignment.center,
           children: [
             Obx(() {
-              double progress = (controller.player.duration != null &&
+              controller.progress1.value = (controller.player.duration != null &&
                   controller.player.duration!.inMilliseconds > 0)
                   ? controller.progress.value
                   : 0.0;
 
+
               return CircularProgressIndicator(
-                value: progress,
+                value: controller.progress1.value,
                 strokeWidth: 3,
                 color: AppColors.vividOrange,
                 backgroundColor: AppColors.blanc,

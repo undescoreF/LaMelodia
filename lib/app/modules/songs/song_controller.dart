@@ -9,12 +9,14 @@ class SongsController extends GetxController {
 
   var songs = <SongModel>[].obs;
   var isPlaying = false.obs;
+  bool isListening = false;
   RxInt songIndex = 0.obs;
   var isExpanded = false.obs;
   var currentSongTitle = "".obs;
   RxInt currentPos = 0.obs;
   var vol = 0.0.obs;
   RxDouble progress = 0.0.obs;
+  RxDouble progress1 = 0.0.obs;
 
   @override
   void onInit() {
@@ -88,6 +90,17 @@ class SongsController extends GetxController {
         if (songIndex.value != id) {
           songIndex.value = id;
           await player.seek(Duration.zero, index: id);
+
+          if (!isListening) {
+            player.currentIndexStream.listen((index) {
+              if (index != null) {
+                songIndex.value = index;
+                currentSongTitle.value = songs[index].title;
+                update();
+              }
+            });
+            isListening = true;
+          }
         }
         await player.play();
         currentSongTitle.value = title;
