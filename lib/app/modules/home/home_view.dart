@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:melodia/app/modules/albums/album_controller.dart';
+import 'package:melodia/app/modules/albums/album_list_view.dart';
 import 'package:melodia/app/modules/home/home_content.dart';
 import 'package:melodia/app/widgets/player/mini_player.dart';
 import '../../widgets/bottom_bar.dart';
@@ -20,9 +22,9 @@ class HomeView extends StatelessWidget {
               controller.selectedIndex.value = index;
             },
             children: [
-              HomeContent(),
               SongView(),
               HomeContent(),
+              AlbumListView(),
               HomeContent(),
               HomeContent(),
             ],

@@ -23,8 +23,8 @@ class CustomBottomBar extends StatelessWidget {
       onTap: (index) => controller.changeTab(index),
       type: BottomNavigationBarType.fixed,
       items: const [
-        BottomNavigationBarItem(icon: Icon(Icons.home_outlined), label: 'Home'),
         BottomNavigationBarItem(icon: Icon(Icons.music_note_outlined), label: 'Songs'),
+        BottomNavigationBarItem(icon: Icon(Icons.favorite), label: 'Favorites'),
         BottomNavigationBarItem(icon: Icon(Icons.library_music_outlined), label: 'Albums'),
         BottomNavigationBarItem(icon: Icon(Icons.person_2_outlined), label: 'Artists'),
         BottomNavigationBarItem(icon: Icon(Icons.playlist_play_outlined), label: 'PlayList'),

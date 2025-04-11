@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:just_audio/just_audio.dart';
-import 'package:lucide_icons_flutter/lucide_icons.dart';
 import 'package:melodia/app/modules/songs/song_controller.dart';
 import 'package:melodia/app/theme/color.dart';
+import 'package:melodia/app/widgets/player/control.dart';
+import 'package:melodia/app/widgets/player/volume_control.dart';
 import 'package:on_audio_query/on_audio_query.dart';
 import 'package:marquee/marquee.dart';
 import 'package:sizer/sizer.dart';
@@ -85,7 +85,7 @@ class ExpandedView extends StatelessWidget {
                   style: TextStyle(color: Colors.white),
                 ),
                 Text(
-                  playerController.formatDuration(playerController.player.duration!.inMilliseconds),
+                  playerController.formatDuration(playerController.player.duration!=null ? playerController.player.duration!.inMilliseconds:0),
                   style: TextStyle(color: Colors.white),
                 ),
               ],
@@ -133,97 +133,11 @@ class ExpandedView extends StatelessWidget {
           ).paddingOnly(top: 0.5.h),
         ),
 
-        _buildControls(context),
-        _buildVolumeControl(),
+        ControlsWidget(playerController: playerController),
+        VolumeControlWidget(playerController: playerController),
       ],
     );
   }
-
-  Widget _buildControls(BuildContext context) {
-    final song = playerController.songs[playerController.songIndex.value];
-    return Padding(
-      padding: const EdgeInsets.symmetric(vertical: 15),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          IconButton(
-            icon: Icon(Icons.favorite, color: AppColors.blanc, size: 20.sp),
-            onPressed: () {},
-          ),
-          IconButton(
-            icon: Icon(LucideIcons.repeat, color: AppColors.blanc, size: 20.sp),
-            onPressed: () {},
-          ),
-          IconButton(
-            icon: Icon(Icons.skip_previous, color: AppColors.blanc, size: 30),
-            onPressed: () {playerController.previous();},
-          ),
-          Obx(() => IconButton(
-            style: ButtonStyle(
-              backgroundColor: WidgetStatePropertyAll(AppColors.vividOrange),
-            ),
-            icon: Icon(
-              playerController.isPlaying.value ? Icons.pause : Icons.play_arrow,
-              color: Colors.white,
-              size: 27.sp,
-            ),
-            onPressed: () {
-              playerController.playSong(
-                song.uri!,
-                song.title,
-                playerController.songIndex.value,
-              );
-            },
-          )),
-          IconButton(
-            icon: Icon(Icons.skip_next, color: Colors.white, size: 30),
-            onPressed: () {playerController.next();},
-          ),
-          IconButton(
-            icon: Icon(LucideIcons.shuffle, color: AppColors.blanc, size: 20.sp),
-            onPressed: () { playerController.shuffle();},
-          ),
-          IconButton(
-            icon: Icon(Icons.more_vert, color: AppColors.blanc, size: 20.sp),
-            onPressed: () {},
-          ),
-        ],
-      ),
-    );
-  }
-
-  Widget _buildVolumeControl() {
-    return Obx(() {
-      return Row(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          IconButton(
-            icon: Icon(playerController.vol > 0 ? Icons.volume_down : Icons.volume_off),
-            onPressed: () => playerController.setAudiovolume(0.0),
-          ),
-          Container(
-            width: 60.w,
-            child: SliderTheme(
-              data: SliderThemeData(
-                trackHeight: 1,
-                thumbShape: RoundSliderThumbShape(enabledThumbRadius: 5.0),
-              ),
-              child: Slider(
-                min: 0.0,
-                max: 1.0,
-                value: playerController.vol.value,
-                activeColor: AppColors.vividOrange,
-                inactiveColor: Colors.grey,
-                onChanged: playerController.setAudiovolume,
-              ),
-            ),
-          ),
-          IconButton(
-            icon: Icon(Icons.volume_up),
-            onPressed: () => playerController.setAudiovolume(1.0),
-          ),
-        ],
-      );
-    });
-  }
 }
+
+

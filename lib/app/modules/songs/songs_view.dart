@@ -45,15 +45,14 @@ class _SongViewState extends State<SongView> {
         ],
       ) : AppBar(
         iconTheme: const IconThemeData(color: AppColors.vividOrange),
-       // backgroundColor: Colors.white,
-        title: Text("Songs", style: TextStyle(color: AppColors.vividOrange),),
-        centerTitle: true,
+
+        title: Text("Melodia", style: TextStyle(color: AppColors.vividOrange),).paddingOnly(left: 2.w),
+        centerTitle: false,
         toolbarHeight: 10.h,
-        leading: IconButton(
-          onPressed:() => setState(() {search=true;}),
-            icon:Icon(LucideIcons.search, size: 25,)).paddingOnly(left: 5.w),
         actions: [
-          Icon(Icons.more_vert, size: 25,).paddingOnly(right: 5.w)
+          IconButton(
+              onPressed:() => setState(() {search=true;}), icon:Icon(LucideIcons.search, size: 20,)),
+          Icon(Icons.more_vert, size: 25,).paddingOnly(right: 5.w),
         ],
       ),
       body: Obx(() {

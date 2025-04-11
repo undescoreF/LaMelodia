@@ -1,18 +1,25 @@
+import 'dart:io';
+
+import 'package:flutter/rendering.dart';
+import 'package:flutter/services.dart';
+import 'package:flutter_file_dialog/flutter_file_dialog.dart';
 import 'package:get/get.dart';
 import 'package:on_audio_query/on_audio_query.dart';
 import 'package:just_audio/just_audio.dart';
+import 'package:path_provider/path_provider.dart';
 import 'package:permission_handler/permission_handler.dart';
+import 'package:share_plus/share_plus.dart';
 
 class SongsController extends GetxController {
   final OnAudioQuery _audioQuery = OnAudioQuery();
   final AudioPlayer player = AudioPlayer();
-
   var songs = <SongModel>[].obs;
   var displayedSongs = <SongModel>[].obs;
   var isPlaying = false.obs;
   bool isListening = false;
   RxInt songIndex = 0.obs;
   var isExpanded = false.obs;
+  var repeatSound = false.obs;
   var currentSongTitle = "".obs;
   var shuffled = false.obs;
   RxInt currentPos = 0.obs;
@@ -20,12 +27,11 @@ class SongsController extends GetxController {
   RxDouble progress = 0.0.obs;
   RxDouble progress1 = 0.0.obs;
 
-
-
   @override
   void onInit() {
     super.onInit();
     checkPermissionsAndLoadSongs();
+    vol.value =0.5;
     player.positionStream.listen((position) {
       final duration = player.duration;
       if (duration != null && duration.inMilliseconds > 0) {
@@ -40,6 +46,7 @@ class SongsController extends GetxController {
     });
 
   }
+
   // Initialiser la playlist
   Future<void> loadPlaylist(List<SongModel> songList) async {
     try {
@@ -53,6 +60,8 @@ class SongsController extends GetxController {
         initialIndex: 0,
         preload: true,
       );
+
+
     } catch (e) {
       Get.snackbar("Erreur", "Impossible de charger la playlist");
       print("Erreur loadPlaylist(): $e");
@@ -158,30 +167,13 @@ class SongsController extends GetxController {
   void shuffle() async {
 
     try {
-      await player.setShuffleModeEnabled(true);
+      shuffled.value = !shuffled.value;
+      shuffled.value ? await player.setShuffleModeEnabled(true) : await player.setShuffleModeEnabled(false) ;
       await player.shuffle();
-
-
-      //;
       if (player.shuffleIndices != null) {
-        final shuffledSongs = player.shuffleIndices!.map((index) => songs[index]).toList();
         displayedSongs.value = player.shuffleModeEnabled
             ? player.shuffleIndices!.map((i) => songs[i]).toList()
             : songs;
-      }
-
-      if (player.playing) {
-        print("jud${songIndex.value} ${player.currentIndex}");
-        if (songIndex.value != player.currentIndex) {
-          print("judo${songIndex.value} ${player.currentIndex}");
-          songIndex.value = player.currentIndex ?? 0;
-          currentSongTitle.value = songs[songIndex.value].title;
-          await player.seek(Duration.zero, index: songIndex.value);
-          await player.play();
-          update();
-        } else {
-         // currentSongTitle.value = songs[songIndex.value].title;
-        }
       }
       update();
     } catch (e) {
@@ -189,6 +181,29 @@ class SongsController extends GetxController {
       print("Shuffle error: $e");
     }
   }
+
+  //
+  void repeat(){
+     repeatSound.value = !repeatSound.value;
+     player.setLoopMode(repeatSound.value ?LoopMode.one : LoopMode.off);
+  }
+
+
+
+  Future<void> shareSong(SongModel song) async {
+
+    // Vérifie si le fichier existe
+    final file = File(song.data);
+    if (await file.exists()) {
+      await Share.shareXFiles(
+        [XFile(file.path)],);
+    } else {
+      print("Fichier non trouvé");
+    }
+  }
+
+
+
   //formatage
   String formatDuration(int milliseconds) {
     int seconds = (milliseconds / 1000).round();
