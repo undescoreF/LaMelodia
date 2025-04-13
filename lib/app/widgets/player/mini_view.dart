@@ -11,7 +11,7 @@ class MiniView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Obx(() {
-      final song = controller.songs[controller.songIndex.value];
+      final song = controller.songs[controller.currentIndex.value];
 
       return ListTile(
         leading: QueryArtworkWidget(
@@ -49,11 +49,10 @@ class MiniView extends StatelessWidget {
             IconButton(
               icon: Icon(controller.isPlaying.value ? Icons.pause : Icons.play_arrow),
               onPressed: () {
-                print("okokokok");
                 controller.playSong(
                   song.uri!,
                   song.title,
-                  controller.songIndex.value,
+                  controller.currentIndex.value,
                 );
               },
             ),

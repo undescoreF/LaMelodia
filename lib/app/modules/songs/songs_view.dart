@@ -56,6 +56,9 @@ class _SongViewState extends State<SongView> {
         ],
       ),
       body: Obx(() {
+        if (controller.isLoading.value) {
+          return const Center(child: CircularProgressIndicator());
+        }
           return ListView.builder(
               itemCount: controller.displayedSongs.length,
               itemBuilder:(context, index){
@@ -71,7 +74,7 @@ class _SongViewState extends State<SongView> {
                   title: Text(songs.title,maxLines: 1,overflow: TextOverflow.ellipsis, style: Theme.of(context).textTheme.titleMedium),
 
                   subtitle: Text(
-                    "${songs.artist}. ${controller.formatDuration(songs.duration!)}",
+                    "${songs.artist} • ${controller.formatDuration(songs.duration!)}",
                     style: Theme.of(context).textTheme.bodySmall,
                     overflow: TextOverflow.ellipsis,
                   ),

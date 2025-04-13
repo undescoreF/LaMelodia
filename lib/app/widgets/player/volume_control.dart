@@ -16,8 +16,8 @@ class VolumeControlWidget extends StatelessWidget {
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
           IconButton(
-            icon: Icon(playerController.vol > 0 ? Icons.volume_down : Icons.volume_off),
-            onPressed: () => playerController.setAudiovolume(0.0),
+            icon: Icon(playerController.volume> 0 ? Icons.volume_down : Icons.volume_off),
+            onPressed: () => playerController.setVolume(0.0),
           ),
           Container(
             width: 60.w,
@@ -30,16 +30,16 @@ class VolumeControlWidget extends StatelessWidget {
                 min: 0.0,
                 max: 1.0,
 
-                value:playerController.vol.value,
+                value:playerController.volume.value,
                 activeColor: AppColors.vividOrange,
                 inactiveColor: Colors.grey,
-                onChanged: playerController.setAudiovolume,
+                onChanged: playerController.setVolume,
               ),
             ),
           ),
           IconButton(
             icon: Icon(Icons.volume_up),
-            onPressed: () => playerController.setAudiovolume(1.0),
+            onPressed: () => playerController.setVolume(1.0),
           ),
         ],
       );

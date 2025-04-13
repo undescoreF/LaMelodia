@@ -23,9 +23,9 @@ class HomeView extends StatelessWidget {
             },
             children: [
               SongView(),
-              HomeContent(),
               AlbumListView(),
               HomeContent(),
+              //HomeContent(),
               HomeContent(),
             ],
           ),
@@ -33,10 +33,11 @@ class HomeView extends StatelessWidget {
             return playerController.currentSongTitle.value.isNotEmpty
                 ? DraggableScrollableSheet(
                 snap: true,
-                //expand: true,
-                initialChildSize: 0.1, // Mini lecteur
+                expand: true,
+                controller: playerController.sheetController,
+                initialChildSize: 0.1,
                 minChildSize: 0.1,
-                maxChildSize: 1.0, // Grand lecteur
+                maxChildSize: 1.0,
                 builder: (context, scrollController) {
                   return MiniPlayer(scrollController: scrollController);
               },

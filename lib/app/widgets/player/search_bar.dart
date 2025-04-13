@@ -25,7 +25,6 @@ class _CustomSearchBarState extends State<CustomSearchBar> {
       title: SizedBox(
         height: 7.h,
         child: SearchBar(
-          //  backgroundColor:WidgetStatePropertyAll(Colors.white),
           side: WidgetStatePropertyAll(BorderSide(color: AppColors.vividOrange,width: 1)),
           hintText: "Search...",
           leading: IconButton(
@@ -38,9 +37,6 @@ class _CustomSearchBarState extends State<CustomSearchBar> {
       ).paddingOnly(top: 2.h),
       centerTitle: false,
       toolbarHeight: 10.h,
-      actions: [
-        Icon(LucideIcons.listFilterPlus, size: 30,).paddingOnly(right: 5.w).paddingOnly(top: 2.h)
-      ],
     ) : AppBar(
       iconTheme: const IconThemeData(color: AppColors.vividOrange),
 
@@ -50,7 +46,7 @@ class _CustomSearchBarState extends State<CustomSearchBar> {
       actions: [
         IconButton(
             onPressed:() => setState(() {widget.search=true;}), icon:Icon(LucideIcons.search, size: 20,)),
-        Icon(Icons.more_vert, size: 25,).paddingOnly(right: 5.w),
+        //Icon(Icons.more_vert, size: 25,).paddingOnly(right: 5.w),
       ],
     );
   }

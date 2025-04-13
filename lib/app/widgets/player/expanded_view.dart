@@ -20,7 +20,7 @@ class ExpandedView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final song = playerController.songs[playerController.songIndex.value];
+    final song = playerController.songs[playerController.currentIndex.value];
 
     return ListView(
       controller: scrollController,
@@ -81,7 +81,7 @@ class ExpandedView extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 Text(
-                  playerController.formatDuration(playerController.currentPos.value),
+                  playerController.formatDuration(playerController.currentAudioPosition.value),
                   style: TextStyle(color: Colors.white),
                 ),
                 Text(

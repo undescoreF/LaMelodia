@@ -22,14 +22,18 @@ class MiniPlayer extends StatelessWidget {
       builder: (context, constraints) {
         double height = constraints.maxHeight;
         WidgetsBinding.instance.addPostFrameCallback((_) {
-          playerController.isExpanded.value = height > screenHeight * 0.2;
+          final shouldExpand = height > screenHeight * 0.3;
+          if (playerController.isExpanded.value != shouldExpand) {
+            playerController.isExpanded.value = shouldExpand;
+          }
         });
 
 
         return Obx(() {
-          final song = playerController.songs[playerController.songIndex.value];
+          final song = playerController.songs[playerController.currentIndex.value];
           final isExpanded = playerController.isExpanded.value;
           return AnimatedContainer(
+            curve: Curves.fastLinearToSlowEaseIn,
             duration: const Duration(milliseconds: 300),
             decoration: BoxDecoration(
               borderRadius: const BorderRadius.vertical(top: Radius.circular(20)),
