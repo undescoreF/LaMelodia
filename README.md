@@ -23,26 +23,22 @@ LaMelodia is a modern local music player built with **Flutter**. It features a s
     <tr>
       <td><img src="screenshots/img1.png" width="200px"></td>
       <td><img src="screenshots/img2.png" width="200px"></td>
-      <td><img src="screenshots/img3.png" width="200px"></td>
       <td><img src="screenshots/img4.png" width="200px"></td>
     </tr>
     <tr>
       <td align="center">Home Screen</td>
       <td align="center">Player View</td>
-      <td align="center">Playlists</td>
-      <td align="center">Mini Player</td>
+      <td align="center">Player View</td>
     </tr>
     <tr>
       <td><img src="screenshots/img5.png" width="200px"></td>
-      <td><img src="screenshots/img6.png" width="200px"></td>
       <td><img src="screenshots/img7.png" width="200px"></td>
       <td><img src="screenshots/img8.png" width="200px"></td>
     </tr>
     <tr>
-      <td align="center">Artists</td>
       <td align="center">Albums</td>
-      <td align="center">Settings</td>
-      <td align="center">Equalizer</td>
+      <td align="center">playlist</td>
+      <td align="center">playlist</td>
     </tr>
   </table>
 </div>
@@ -107,3 +103,7 @@ Commit your changes (git commit -m 'Add some AmazingFeature')
 Push to the branch (git push origin feature/AmazingFeature)
 
 Open a Pull Request
+
+##📃 License
+Distributed under the MIT License. See LICENSE for more information.
+
