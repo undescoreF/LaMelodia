@@ -49,10 +49,9 @@ LaMelodia is a modern local music player built with **Flutter**. It features a s
 
 - **Search** for songs, artists, or playlists
 - **Add a song** to a playlist
-- **Create and manage** custom playlists
+- **Manage** custom playlists
 - **Persistent player** on lock screen or background
 - **Notification controls** for quick access playback
-- Shuffle and repeat modes with smarter handling
 -  Theme customization and improved accessibility
 -  **Equalizer**
 -  **Settings**
