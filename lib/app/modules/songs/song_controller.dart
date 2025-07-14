@@ -10,10 +10,13 @@ import 'package:share_plus/share_plus.dart';
 class SongsController extends GetxController {
   final OnAudioQuery _audioQuery = OnAudioQuery();
   final AudioPlayer player = AudioPlayer();
-  final DraggableScrollableController sheetController = DraggableScrollableController();
+  final DraggableScrollableController sheetController =
+      DraggableScrollableController();
   // Variables observables
   var songs = <SongModel>[].obs;
   var displayedSongs = <SongModel>[].obs;
+  var displayedSearchSongs = <SongModel>[].obs;
+  var songsCopy = <SongModel>[].obs;
   var isPlaying = false.obs;
   var currentIndex = 0.obs;
   var currentSongTitle = "".obs;
@@ -55,7 +58,9 @@ class SongsController extends GetxController {
     });
   }
 
-  Future<void> loadPlaylist(List<SongModel> songList, {bool autoPlay = false}) async {
+
+  Future<void> loadPlaylist(List<SongModel> songList,
+      {bool autoPlay = false}) async {
     try {
       isLoading(true);
       if (listEquals(songs, songList)) return;
@@ -65,7 +70,9 @@ class SongsController extends GetxController {
 
       await player.setAudioSource(
         ConcatenatingAudioSource(
-          children: songList.map((song) => AudioSource.uri(Uri.parse(song.uri!))).toList(),
+          children: songList
+              .map((song) => AudioSource.uri(Uri.parse(song.uri!)))
+              .toList(),
           useLazyPreparation: true,
         ),
         preload: true,
@@ -99,18 +106,21 @@ class SongsController extends GetxController {
         ignoreCase: true,
       );
 
-      final mp3Songs = fetchedSongs.where((song) => song.fileExtension == "mp3").toList();
+      final mp3Songs =
+          fetchedSongs.where((song) => song.fileExtension == "mp3").toList();
       await loadPlaylist(mp3Songs);
       displayedSongs.value = songs.value;
+      songsCopy.value = displayedSongs.value;
     } catch (e) {
       Get.snackbar("Erreur", "Échec du chargement des chansons");
     }
   }
 
-
   Future<void> playSong(String uri, String title, int index) async {
     try {
-      if (player.playing && currentIndex.value == index && currentSongTitle.value != title) {
+      if (player.playing &&
+          currentIndex.value == index &&
+          currentSongTitle.value != title) {
         await player.pause();
       } else {
         if (currentIndex.value != index) {
@@ -125,7 +135,6 @@ class SongsController extends GetxController {
       Get.snackbar("Erreur", "Impossible de lire la musique");
     }
   }
-
 
   // Méthodes utilitaires
   void togglePlayer() => isExpanded.value = !isExpanded.value;
@@ -179,6 +188,16 @@ class SongsController extends GetxController {
     final file = File(song.data);
     if (await file.exists()) {
       await Share.shareXFiles([XFile(file.path)]);
+    }
+  }
+  Future<void> searchSongs(String keyword) async {
+
+    if(keyword==""){
+      displayedSongs.value = songsCopy.value;
+    }else{
+     final songs = await _audioQuery.queryWithFilters(keyword,WithFiltersType.AUDIOS);
+      displayedSongs.value = songs.toSongModel();
+      //loadPlaylist(displayedSongs);
     }
   }
 

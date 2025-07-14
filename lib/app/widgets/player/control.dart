@@ -14,7 +14,8 @@ class ControlsWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     return Obx(() {
       final currentSong = playerController.songs.isNotEmpty &&
-          playerController.currentIndex.value < playerController.songs.length
+              playerController.currentIndex.value <
+                  playerController.songs.length
           ? playerController.songs[playerController.currentIndex.value]
           : null;
 
@@ -35,10 +36,10 @@ class ControlsWidget extends StatelessWidget {
                 backgroundColor: WidgetStatePropertyAll(
                     playerController.isRepeating.value
                         ? AppColors.vividOrange
-                        : Colors.transparent
-                ),
+                        : Colors.transparent),
               ),
-              icon: Icon(LucideIcons.repeat, color: AppColors.blanc, size: 20.sp),
+              icon:
+                  Icon(LucideIcons.repeat, color: AppColors.blanc, size: 20.sp),
               onPressed: playerController.toggleRepeat,
             ),
 
@@ -47,13 +48,14 @@ class ControlsWidget extends StatelessWidget {
               onPressed: playerController.previous,
             ),
 
-
             IconButton(
               style: ButtonStyle(
                 backgroundColor: WidgetStatePropertyAll(AppColors.vividOrange),
               ),
               icon: Icon(
-                playerController.isPlaying.value ? Icons.pause : Icons.play_arrow,
+                playerController.isPlaying.value
+                    ? Icons.pause
+                    : Icons.play_arrow,
                 color: Colors.white,
                 size: 27.sp,
               ),
@@ -64,29 +66,29 @@ class ControlsWidget extends StatelessWidget {
               },
             ),
 
-
             IconButton(
               icon: Icon(Icons.skip_next, color: Colors.white, size: 30),
               onPressed: playerController.next,
             ),
-
 
             IconButton(
               style: ButtonStyle(
                 backgroundColor: WidgetStatePropertyAll(
                     playerController.isShuffled.value
                         ? AppColors.vividOrange
-                        : Colors.transparent
-                ),
+                        : Colors.transparent),
               ),
-              icon: Icon(LucideIcons.shuffle, color: AppColors.blanc, size: 20.sp),
+              icon: Icon(LucideIcons.shuffle,
+                  color: AppColors.blanc, size: 20.sp),
               onPressed: playerController.shuffle,
             ),
 
-            if (currentSong != null) IconButton(
-              icon: Icon(LucideIcons.share2, color: AppColors.blanc, size: 20.sp),
-              onPressed: () => playerController.shareSong(currentSong),
-            ),
+            if (currentSong != null)
+              IconButton(
+                icon: Icon(LucideIcons.share2,
+                    color: AppColors.blanc, size: 20.sp),
+                onPressed: () => playerController.shareSong(currentSong),
+              ),
           ],
         ),
       );

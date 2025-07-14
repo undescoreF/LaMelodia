@@ -28,9 +28,10 @@ class AlbumView extends StatelessWidget {
 
         return Stack(
           children: [
-            BlurredBackground(artworkFuture: OnAudioQuery().queryArtwork(album.id, ArtworkType.ALBUM),
-              blurIntensity: 70
-            ),
+            BlurredBackground(
+                artworkFuture:
+                    OnAudioQuery().queryArtwork(album.id, ArtworkType.ALBUM),
+                blurIntensity: 70),
             // Artwork principal
             QueryArtworkWidget(
               id: album.id,
@@ -57,20 +58,20 @@ class AlbumView extends StatelessWidget {
             Center(
               child: album.album.length >= 30
                   ? SizedBox(
-                height: 30,
-                child: Marquee(
-                  text: album.album,
-                  style: Theme.of(context).textTheme.titleLarge,
-                  scrollAxis: Axis.horizontal,
-                  blankSpace: 50.0,
-                  velocity: 30.0,
-                  pauseAfterRound: const Duration(seconds: 1),
-                ),
-              )
+                      height: 30,
+                      child: Marquee(
+                        text: album.album,
+                        style: Theme.of(context).textTheme.titleLarge,
+                        scrollAxis: Axis.horizontal,
+                        blankSpace: 50.0,
+                        velocity: 30.0,
+                        pauseAfterRound: const Duration(seconds: 1),
+                      ),
+                    )
                   : Text(
-                album.album,
-                style: Theme.of(context).textTheme.titleLarge,
-              ),
+                      album.album,
+                      style: Theme.of(context).textTheme.titleLarge,
+                    ),
             ),
 
             // Nombre de chansons
@@ -106,7 +107,8 @@ class AlbumView extends StatelessWidget {
                     style: Theme.of(context).textTheme.bodySmall,
                   ),
                   onTap: () async {
-                    await controller.songsController.loadPlaylist(controller.currentAlbumSongs);
+                    await controller.songsController
+                        .loadPlaylist(controller.currentAlbumSongs);
                     controller.playAlbumSong(index);
                   },
                 );

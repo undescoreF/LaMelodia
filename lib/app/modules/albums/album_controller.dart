@@ -22,20 +22,21 @@ class AlbumController extends GetxController {
       final status = await Permission.storage.request();
       if (!status.isGranted) {
         Get.snackbar("Permission required", "Please grant storage access");
-      }
-      else{
+      } else {
         fetchAlbums();
       }
     } catch (e) {
       Get.snackbar("Error", "Permission check failed");
     }
   }
+
   Future<void> fetchAlbums() async {
     isLoading(true);
     List<AlbumModel> fetchedAlbums = await _audioQuery.queryAlbums(
       orderType: OrderType.DESC_OR_GREATER,
     );
-    List<AlbumModel> _album = fetchedAlbums.where((album) => album.artist != "<unknown>").toList();
+    List<AlbumModel> _album =
+        fetchedAlbums.where((album) => album.artist != "<unknown>").toList();
     List<AlbumModel> prioritizedAlbum = [
       ..._album,
       ...fetchedAlbums.where((album) => album.artist == "<unknown>"),
@@ -44,8 +45,7 @@ class AlbumController extends GetxController {
     isLoading(false);
   }
 
-
-    Future<void> loadAlbumSongs(int albumId) async {
+  Future<void> loadAlbumSongs(int albumId) async {
     try {
       isLoading(true);
       currentAlbumSongs.value = await _audioQuery.queryAudiosFrom(
@@ -57,6 +57,15 @@ class AlbumController extends GetxController {
     } catch (e) {
       isLoading(false);
       Get.snackbar("Error", "Failed to load album songs");
+    }
+  }
+  Future<void> searchSongs(String keyword) async {
+
+    if(keyword==""){
+
+    }else{
+      final album = await _audioQuery.queryWithFilters(keyword,WithFiltersType.ALBUMS);
+      albums.value = album.toAlbumModel();
     }
   }
 

@@ -5,7 +5,6 @@ import 'package:melodia/app/modules/songs/songs_view.dart';
 import '../modules/home/home_binding.dart';
 import '../modules/home/home_view.dart';
 
-
 abstract class AppRoutes {
   static const HOME = '/home';
   static const PLAYER = '/player';
@@ -22,7 +21,7 @@ class AppPages {
       transition: Transition.fadeIn,
       transitionDuration: Duration(milliseconds: 300),
     ),
- /*   GetPage(
+    /*   GetPage(
       name: AppRoutes.PLAYER,
       page: () => SongView(),
      binding: SongsBinding(),

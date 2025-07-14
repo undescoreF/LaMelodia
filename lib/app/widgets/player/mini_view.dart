@@ -6,21 +6,27 @@ import '../../theme/color.dart';
 
 class MiniView extends StatelessWidget {
   final SongsController controller;
-  const MiniView({Key? key, required this.controller}) : super(key: key);
+  final SongModel song;
+  const MiniView({super.key, required this.controller, required this.song});
 
   @override
   Widget build(BuildContext context) {
-    return Obx(() {
-      final song = controller.songs[controller.currentIndex.value];
-
-      return ListTile(
+    final song = this.song;
+    return GestureDetector(
+      onTap: () => controller.sheetController.animateTo(
+        1.0,
+        duration: Duration(milliseconds: 300),
+        curve: Curves.easeInOut,
+      ),
+      child: ListTile(
         leading: QueryArtworkWidget(
           id: song.id,
           type: ArtworkType.AUDIO,
-          nullArtworkWidget: const Icon(Icons.music_note, color: Colors.white, size: 40),
+          nullArtworkWidget:
+              const Icon(Icons.music_note, color: Colors.white, size: 40),
         ),
         title: Text(
-          controller.currentSongTitle.value,
+          song.title,
           style: const TextStyle(color: Colors.white),
           overflow: TextOverflow.ellipsis,
         ),
@@ -33,32 +39,26 @@ class MiniView extends StatelessWidget {
           alignment: Alignment.center,
           children: [
             Obx(() {
-              controller.progress1.value = (controller.player.duration != null &&
-                  controller.player.duration!.inMilliseconds > 0)
-                  ? controller.progress.value
-                  : 0.0;
-
-
               return CircularProgressIndicator(
-                value: controller.progress1.value,
+                value: controller.progress.value,
                 strokeWidth: 3,
                 color: AppColors.vividOrange,
                 backgroundColor: AppColors.blanc,
               );
             }),
-            IconButton(
-              icon: Icon(controller.isPlaying.value ? Icons.pause : Icons.play_arrow),
-              onPressed: () {
-                controller.playSong(
-                  song.uri!,
-                  song.title,
-                  controller.currentIndex.value,
-                );
-              },
-            ),
+            Obx(() {
+              return IconButton(
+                icon: Icon(controller.isPlaying.value
+                    ? Icons.pause
+                    : Icons.play_arrow),
+                onPressed: () {
+                  controller.pauseSong();
+                },
+              );
+            }),
           ],
         ),
-      );
-    });
+      ),
+    );
   }
 }

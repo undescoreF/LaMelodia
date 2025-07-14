@@ -16,7 +16,9 @@ class VolumeControlWidget extends StatelessWidget {
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
           IconButton(
-            icon: Icon(playerController.volume> 0 ? Icons.volume_down : Icons.volume_off),
+            icon: Icon(playerController.volume > 0
+                ? Icons.volume_down
+                : Icons.volume_off),
             onPressed: () => playerController.setVolume(0.0),
           ),
           Container(
@@ -29,8 +31,7 @@ class VolumeControlWidget extends StatelessWidget {
               child: Slider(
                 min: 0.0,
                 max: 1.0,
-
-                value:playerController.volume.value,
+                value: playerController.volume.value,
                 activeColor: AppColors.vividOrange,
                 inactiveColor: Colors.grey,
                 onChanged: playerController.setVolume,
@@ -44,6 +45,5 @@ class VolumeControlWidget extends StatelessWidget {
         ],
       );
     });
-   }
+  }
 }
-
